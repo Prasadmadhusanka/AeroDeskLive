@@ -1,0 +1,287 @@
+/* styles/component_styles/FilterModal.module.css */
+/* Modal styling */
+.modal {
+  color: var(--dark-text);
+  font-family: "Inter", sans-serif;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  min-height: 95vh;
+}
+
+.modalHeader {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
+  color: var(--light-text);
+  border-bottom: none;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.modalTitle {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.selectedAirportHeader {
+  font-weight: 400;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.modalBody {
+  padding: 1rem;
+}
+
+.modalFooter {
+  border-top: 1px solid var(--unknown-light);
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 1.5rem;
+  background-color: var(--background);
+}
+
+/* Dropdowns */
+.dropdownRow {
+  margin-bottom: 16px;
+  gap: 16px 0;
+}
+
+.dropdownCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownCol label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: var(--grey-text);
+}
+
+.dropdownColWithButton label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: var(--grey-text);
+}
+
+/* Dropdown + button container */
+.dropdownColWithButton {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dropdownWithButton {
+  flex: 1 1 auto;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Map */
+.mapRow {
+  margin-top: 12px;
+}
+
+.mapColumn {
+  display: flex;
+  height: 600px;
+  position: relative; /* for popup and legend positioning */
+}
+
+.mapContainer {
+  flex: 1;
+  background-color: var(--background);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--unknown-light);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Popup */
+.popup {
+  display: none;
+  position: absolute;
+  background-color: white;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  min-width: 120px;
+  z-index: 100;
+  transform: translate(-50%, -100%);
+}
+
+.popup:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+}
+
+.popupContent {
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Map Legend */
+.legend {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-size: 12px;
+  z-index: 1000;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.legend div:last-child {
+  margin-bottom: 0;
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* Buttons */
+.applyButton {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+  color: var(--light-text);
+}
+
+.applyButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--diverted-dark) 100%
+  );
+}
+
+.applyButton:disabled {
+  background: var(--grey-text);
+  cursor: not-allowed;
+}
+
+.clearButton {
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  height: 38px;
+  width: 38px;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--light-text);
+  border: none;
+  flex-shrink: 0;
+}
+
+.clearButton:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+/* Custom styles for react-select */
+:global(.css-1s2u09g-control),
+:global(.css-1pahdxg-control) {
+  border-color: var(--unknown-dark) !important;
+  box-shadow: none !important;
+  border-radius: var(--border-radius) !important;
+}
+
+:global(.css-1okebmr-indicatorSeparator) {
+  background-color: var(--unknown-dark) !important;
+}
+
+:global(.css-tlfecz-indicatorContainer) {
+  color: var(--unknown-dark) !important;
+}
+
+:global(.css-1n7v3ny-option) {
+  background-color: var(--scheduled-light) !important;
+  color: var(--scheduled-dark) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .mapColumn {
+    height: 300px;
+  }
+}
+
+@media (max-width: 375px) {
+  .mapColumn {
+    height: 250px;
+  }
+
+  .modalHeader,
+  .modalFooter {
+    padding: 0 1rem;
+  }
+}
+
+
+.countryOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.countryFlag {
+  object-fit: cover;
+}
+
+.countryFallback {
+  display: none;
+  width: 16px;
+  height: 16px;
+  background: var(--dark-text);
+  color: white;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.6rem;
+}

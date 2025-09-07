@@ -1,0 +1,607 @@
+/* styles/component_styles/MainWindow.module.css */
+:root {
+  --header-height: 60px;
+  --map-height: 55vh;
+  --list-height: calc(40vh - var(--header-height) - 2.5 * var(--spacing));
+}
+
+.mainWindow {
+  width: 100%;
+  height: 100vh;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  position: relative;
+  height: var(--header-height);
+  padding: var(--spacing);
+  background-color: var(--background);
+  box-shadow: var(--shadow);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--dark-text);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.title:hover {
+  opacity: 0.9;
+}
+
+.titleContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.flag {
+  width: 24px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.titleText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.airportName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.countryRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.countryName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.countryFallback {
+  display: none;
+  width: 28px;
+  height: 28px;
+  background: var(--dark-text);
+  color: white;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.filterButton {
+  position: absolute;
+  left: calc(2 * var(--spacing));
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.filterButton:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.filterIcon {
+  font-size: 1.3rem;
+}
+
+.filterButton:hover .filterIcon {
+  font-size: 1.4rem;
+}
+
+.refreshButton {
+  position: absolute;
+  right: calc(2 * var(--spacing));
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.refreshButton:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.refreshIcon {
+  font-size: 1.3rem;
+}
+
+.refreshButton:hover .filterIcon {
+  font-size: 1.4rem;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Column Styles */
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* Section Header with Dropdown */
+.sectionHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  gap: 20px;
+}
+
+.sectionHeader h4 {
+  /* margin-right: 40px; */
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.dropdownContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownToggle {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.dropdownToggle:hover {
+  background-color: var(--secondary-color);
+}
+
+.dropdownArrow {
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--background);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px var(--shadow);
+  z-index: 1000;
+  min-width: 120px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.dropdownItem {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+}
+
+.dropdownItem:hover {
+  background-color: var(--light-text);
+}
+
+.dropdownItem.active {
+  background-color: var(--primary-color);
+  color: var(--background);
+}
+
+/* Map and List Containers */
+.mapContainer,
+.listContainer {
+  background-color: var(--background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: var(--spacing);
+  margin: calc(var(--spacing) / 2);
+}
+
+.row1 {
+  margin-left: calc(var(--spacing) / 2);
+  margin-right: calc(var(--spacing) / 2);
+  margin-bottom: calc(var(--spacing) / 2);
+}
+
+.mapContainer {
+  height: var(--map-height);
+  overflow: hidden;
+}
+
+.listContainer {
+  height: var(--list-height);
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for list containers */
+.listContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.listContainer::-webkit-scrollbar-track {
+  background: var(--card-bg);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.listContainer::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
+  border-radius: 4px;
+}
+
+.listContainer::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    135deg,
+    var(--secondary-color) 0%,
+    var(--primary-color) 100%
+  );
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  :root {
+    --map-height: 55vh;
+    --header-height: 56px;
+    --list-height: calc(42vh - var(--header-height) - 2.5 * var(--spacing));
+  }
+
+  .container {
+    overflow-y: auto;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .arrivalMapRow,
+  .arrivalListRow,
+  .departureMapRow,
+  .departureListRow {
+    height: auto;
+  }
+
+  .mapContainer,
+  .listContainer {
+    height: auto;
+    margin: calc(var(--spacing) / 2) 0;
+  }
+
+  .mapContainer {
+    height: var(--map-height);
+    overflow-y: hidden;
+  }
+
+  .listContainer {
+    height: var(--list-height);
+    overflow-y: auto;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .titleContent {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .titleText {
+    align-items: center;
+    text-align: center;
+  }
+
+  .airportName {
+    font-size: 1.1rem;
+  }
+
+  .countryName {
+    font-size: 0.85rem;
+  }
+
+  .flag {
+    width: 22px;
+    height: 16px;
+  }
+
+  .sectionHeader {
+    align-items: center;
+    gap: 15px;
+  }
+
+  .dropdownContainer {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --map-height: 55vh;
+    --header-height: 56px;
+    --list-height: calc(41vh - var(--header-height) - 2.5 * var(--spacing));
+  }
+
+  .listContainer {
+    height: var(--list-height);
+    overflow-y: auto;
+  }
+
+  .airportName {
+    font-size: 1rem;
+  }
+
+  .countryName {
+    font-size: 0.8rem;
+  }
+
+  .flag {
+    width: 20px;
+    height: 15px;
+  }
+}
+
+@media (max-width: 388px) {
+  :root {
+    --map-height: 55vh;
+    --header-height: 56px;
+    --list-height: calc(40vh - var(--header-height) - 2.5 * var(--spacing));
+  }
+
+  .listContainer {
+    height: var(--list-height);
+    overflow-y: auto;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .airportName {
+    font-size: 0.95rem;
+  }
+
+  .countryName {
+    font-size: 0.75rem;
+  }
+
+  .flag {
+    width: 18px;
+    height: 13px;
+  }
+
+  .dropdownToggle {
+    padding: 6px 8px;
+    font-size: 0.9rem;
+  }
+
+  .dropdownItem {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1000px) and (min-height: 1366px) and (orientation: portrait) {
+  :root {
+    --map-height: 55vh;
+    --header-height: 56px;
+    --list-height: calc(42vh - var(--header-height) - 2.5 * var(--spacing));
+  }
+
+  .container {
+    overflow-y: auto;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .arrivalMapRow,
+  .arrivalListRow,
+  .departureMapRow,
+  .departureListRow {
+    height: auto;
+  }
+
+  .mapContainer,
+  .listContainer {
+    height: auto;
+    margin: calc(var(--spacing) / 2) 0;
+  }
+
+  .mapContainer {
+    height: var(--map-height);
+    overflow-y: hidden;
+  }
+
+  .listContainer {
+    height: var(--list-height);
+    overflow-y: auto;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 666px) and (max-height: 440px) {
+  :root {
+    --header-height: 56px;
+    --map-height: calc(86vh - var(--header-height));
+    --list-height: calc(94vh - var(--header-height));
+  }
+
+  .container {
+    overflow-y: auto;
+  }
+
+  .leftColumn,
+  .rightColumn {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .arrivalMapRow,
+  .arrivalListRow,
+  .departureMapRow,
+  .departureListRow {
+    height: auto;
+  }
+
+  .mapContainer,
+  .listContainer {
+    height: auto;
+    margin: calc(var(--spacing) / 2) 0;
+  }
+
+  .mapContainer {
+    height: var(--map-height);
+    overflow-y: hidden;
+  }
+
+  .listContainer {
+    height: var(--list-height);
+    overflow-y: auto;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .airportName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .fullScreenLoader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://raw.githubusercontent.com/Prasadmadhusanka/pm-data-files/main/images/AeroDeskLive/loading_background_mobile.jpg");
+    background-size: cover;
+    background-position: center;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Start from top */
+    align-items: center;
+    color: white;
+    padding-top: 50vh;
+  }
+}
+
+@media (max-width: 450px) {
+  .airportName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 240px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.fullScreenLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://raw.githubusercontent.com/Prasadmadhusanka/pm-data-files/main/images/AeroDeskLive/loading_background.jpg");
+  background-size: cover;
+  background-position: center;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Start from top */
+  align-items: center;
+  color: white;
+  padding-top: 50vh;
+}
+
+.loadingText {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #444;
+}

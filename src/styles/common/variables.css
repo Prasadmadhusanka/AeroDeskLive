@@ -1,0 +1,37 @@
+/* styles/common/variables.css */
+:root {
+  --primary-color: rgb(79, 70, 229); /* #4f46e5 */
+  --secondary-color: rgb(124, 58, 237); /* #7c3aed */
+  --light-text: rgb(234, 234, 234); /* #eaeaea */
+  --dark-text: rgb(33, 37, 41); /* #212529 */
+  --grey-text: rgb(108, 117, 125); /* #6c757d */
+  --background: rgb(255, 255, 255); /* #ffffff */
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --border-radius: 12px;
+  --spacing: 12px;
+
+  --scheduled-dark: rgb(3, 105, 161); /* #0369a1 */
+  --scheduled-light: rgb(224, 242, 254); /* #e0f2fe */
+
+  --active-dark: rgb(22, 101, 52); /* #166534 */
+  --active-light: rgb(220, 252, 231); /* #dcfce7 */
+
+  --landed-dark: rgb(21, 128, 61); /* #15803d */
+  --landed-light: rgb(240, 253, 244); /* #f0fdf4 */
+
+  --cancelled-dark: rgb(185, 28, 28); /* #b91c1c */
+  --cancelled-light: rgb(254, 226, 226); /* #fee2e2 */
+
+  --incident-dark: rgb(146, 64, 14); /* #92400e */
+  --incident-light: rgb(254, 243, 199); /* #fef3c7 */
+
+  --diverted-dark: rgb(91, 33, 182); /* #5b21b6 */
+  --diverted-light: rgb(237, 233, 254); /* #ede9fe */
+
+  --unknown-dark: rgb(75, 85, 99); /* #4b5563 */
+  --unknown-light: rgb(243, 244, 246); /* #f3f4f6 */
+
+  --delay-dark: rgb(146, 64, 14); /* #92400e */
+  --delay-light: rgb(254, 243, 199); /* #fef3c7 */
+}

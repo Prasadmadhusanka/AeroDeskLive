@@ -1,0 +1,87 @@
+/* styles/component_styles/DepartureList.module.css */
+.departureList {
+  height: 100%;
+  padding: 0;
+}
+
+.dashboardRow {
+  height: 100%;
+  margin: 0;
+}
+
+.dashboardCol {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.dashboardTile {
+  background-color: var(--background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboardTile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--background);
+}
+
+.tileTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 8px;
+}
+
+.tileValue {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.tileIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #4f46e5; /* Primary color or customize */
+}
+
+/* Legend for marker colors */
+.legend {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: #374151;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboardCol {
+    padding: 4px;
+  }
+
+  .dashboardTile {
+    padding: 15px 10px;
+    margin-bottom: 8px;
+  }
+
+  .tileTitle {
+    font-size: 0.8rem;
+  }
+
+  .tileValue {
+    font-size: 1.8rem;
+  }
+}

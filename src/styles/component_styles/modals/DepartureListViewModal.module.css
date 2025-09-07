@@ -1,0 +1,425 @@
+/* styles/component_styles/modals/DepartureListViewModal.module.css */
+.modal {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, sans-serif;
+}
+
+/* ===== Modal Header ===== */
+.modalHeader {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
+  color: var(--light-text);
+  border-bottom: none;
+  padding: 1.5rem;
+}
+
+.modalTitle {
+  font-weight: 700;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.flightsCount {
+  display: block;
+  font-size: 1rem;
+  opacity: 1;
+  font-weight: 400;
+  margin-top: 0.3rem;
+}
+
+/* ===== Modal Body ===== */
+.modalBody {
+  padding: 0;
+  overflow-y: auto;
+  background: var(--background);
+}
+
+.placeholder {
+  text-align: center;
+  color: var(--grey-text);
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+.tableContainer {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+/* ===== Table Styles ===== */
+.arrivalTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--light-text);
+}
+
+.tableHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.columnHeader {
+  padding: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  border-bottom: 1px solid var(--light-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.columnHeader:hover {
+  background-color: var(--secondary-color);
+}
+
+.sortActive {
+  color: var(--primary-color);
+}
+
+.sortIcon {
+  margin-left: 0.3rem;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+/* Column specific widths */
+.columnTime {
+  width: 10px;
+}
+
+.columnFlight {
+  width: 100px;
+}
+
+.columnAirline {
+  width: 200px;
+}
+
+.columnOrigin {
+  width: 200px;
+}
+
+.columnStatus {
+  width: 100px;
+}
+
+.columnTerminal {
+  width: 80px;
+}
+
+.columnDuration {
+  width: 80px;
+}
+
+/* ===== Table Rows ===== */
+.tableRow {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--light-text);
+}
+
+.tableRow:hover {
+  background-color: var(--light-text);
+}
+
+.tableRow td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+/* ===== Cell Styles ===== */
+.cellTime {
+  font-weight: 600;
+}
+
+.timeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.scheduledTime {
+  font-size: 0.9rem;
+  color: var(--dark-text);
+}
+
+.delayIndicator {
+  font-size: 0.75rem;
+  color: var(--delay-dark);
+  background: var(--delay-light);
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  max-width: 50px;
+}
+
+.cellFlight .flightInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+
+.flightNumber {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
+}
+
+.cellAirline .airlineInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.airlineLogo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  border-radius: 3px;
+}
+
+.airlineName {
+  font-size: 0.9rem;
+  color: var(--dark-text);
+}
+
+.cellOrigin .originInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.countryFlag {
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-left: 5px;
+  align-items: center;
+}
+
+.originDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.airportCode {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+}
+
+.airportName {
+  font-size: 0.9rem;
+  color: var(--dark-text);
+  font-weight: 500;
+}
+
+.countryName {
+  font-size: 0.9rem;
+  color: var(--grey-text);
+  font-weight: 500;
+}
+
+.cellStatus .statusBadge {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.statusScheduled {
+  background-color: var(--scheduled-light);
+  color: var(--scheduled-dark);
+}
+
+.statusActive {
+  background-color: var(--active-light);
+  color: var(--active-dark);
+}
+
+.statusLanded {
+  background-color: var(--landed-light);
+  color: var(--landed-dark);
+}
+
+.statusCancelled {
+  background-color: var(--cancelled-light);
+  color: var(--cancelled-dark);
+}
+
+.statusIncident {
+  background-color: var(--incident-light);
+  color: var(--incident-dark);
+}
+
+.statusDiverted {
+  background-color: var(--diverted-light);
+  color: var(--diverted-dark);
+}
+
+.statusUnknown {
+  background-color: var(--unknown-light);
+  color: var(--unknown-dark);
+}
+
+.cellTerminal {
+  font-weight: 600;
+  color: var(--dark-text);
+  text-align: center;
+}
+
+.cellDuration {
+  font-size: 0.9rem;
+  color: var(--grey-text);
+  text-align: center;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1200px) {
+  .tableContainer {
+    overflow-x: auto;
+  }
+
+  .arrivalTable {
+    min-width: 900px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modalHeader {
+    padding: 1.2rem;
+  }
+
+  .modalTitle {
+    font-size: 1.2rem;
+  }
+
+  .flightsCount {
+    font-size: 0.85rem;
+  }
+
+  .tableContainer {
+    padding: 1rem;
+  }
+
+  .columnHeader {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .tableRow td {
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .modalHeader {
+    padding: 1rem;
+  }
+
+  .modalTitle {
+    font-size: 1.1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+
+  .flightsCount {
+    font-size: 0.8rem;
+  }
+
+  .tableContainer {
+    padding: 0.8rem;
+  }
+
+  .columnHeader {
+    padding: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .tableRow td {
+    padding: 0.6rem;
+  }
+
+  .airlineName {
+    font-size: 0.8rem;
+  }
+
+  .airportCode {
+    font-size: 0.8rem;
+  }
+
+  .airportName {
+    font-size: 0.75rem;
+  }
+}
+
+/* ===== Custom Scrollbar ===== */
+.tableContainer::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.tableContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
+  border-radius: 4px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    135deg,
+    var(--dark-blue) 0%,
+    var(--primary-color) 100%
+  );
+}
+
+/* ===== Animation ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tableRow {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ===== Close button styling ===== */
+.modalHeader .btn-close {
+  filter: invert(1);
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.modalHeader .btn-close:hover {
+  opacity: 1;
+}
