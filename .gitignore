@@ -25,3 +25,7 @@ dist-ssr
 
 # Data folder
 data_folder/
+
+# Environment files
+.env
+.env.*
