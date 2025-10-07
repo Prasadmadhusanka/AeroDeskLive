@@ -21,7 +21,7 @@ const airportTypeColor = {
   small_airport: "green",
 };
 
-const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
+const FilterModal2 = ({ show, onHide, airports = [], onApplyFilters }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const vectorLayerRef = useRef(null);
@@ -36,8 +36,9 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
   const [selectedAirport, setSelectedAirport] = useState(null);
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
-  const initialView = useRef({ center: fromLonLat([0, 0]), zoom: 2 });
+  const initialView = useRef({ center: fromLonLat([0, 0]), zoom: 1 });
 
+  // Filtering logic
   const filteredAirports = useMemo(() => {
     return airports.filter((a) => {
       const matchContinent =
@@ -62,35 +63,158 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
     selectedAirportCode,
   ]);
 
+  // helper: sort alphabetically but keep "All" on top
+  const sortOptions = (options) => {
+    if (!options.length) return options;
+    const [allOption, ...rest] = options;
+    return [
+      allOption,
+      ...rest.sort((a, b) =>
+        a.label.localeCompare(b.label, "en", { sensitivity: "base" })
+      ),
+    ];
+  };
+
+  // Dropdown Options (dependent + sorted)
   const continentOptions = useMemo(() => {
-    const unique = Array.from(
-      new Set(airports.map((a) => a.continent).filter(Boolean))
-    ).sort();
-    return [defaultSelect, ...unique.map((c) => ({ value: c, label: c }))];
-  }, [airports]);
+    let base = airports;
+    if (selectedCountry.value !== "All") {
+      base = base.filter((a) => a.country_name_new === selectedCountry.value);
+    }
+    if (selectedAirportName.value !== "All") {
+      base = base.filter((a) => a.name === selectedAirportName.value);
+    }
+    if (selectedAirportCode.value !== "All") {
+      base = base.filter((a) => a.iata_code === selectedAirportCode.value);
+    }
+    const unique = Array.from(new Set(base.map((a) => a.continent))).filter(
+      Boolean
+    );
+    return sortOptions([
+      defaultSelect,
+      ...unique.map((c) => ({ value: c, label: c })),
+    ]);
+  }, [airports, selectedCountry, selectedAirportName, selectedAirportCode]);
 
   const countryOptions = useMemo(() => {
-    const unique = Array.from(
-      new Set(airports.map((a) => a.country_name_new).filter(Boolean))
-    ).sort();
-    return [defaultSelect, ...unique.map((c) => ({ value: c, label: c }))];
-  }, [airports]);
+    let base = airports;
+    if (selectedContinent.value !== "All") {
+      base = base.filter((a) => a.continent === selectedContinent.value);
+    }
+    if (selectedAirportName.value !== "All") {
+      base = base.filter((a) => a.name === selectedAirportName.value);
+    }
+    if (selectedAirportCode.value !== "All") {
+      base = base.filter((a) => a.iata_code === selectedAirportCode.value);
+    }
+
+    // Get unique countries with their iso_country codes using object
+    const countryObject = {};
+    base.forEach((a) => {
+      if (a.country_name_new && a.iso_country) {
+        countryObject[a.country_name_new] = a.iso_country;
+      }
+    });
+
+    const uniqueCountries = Object.entries(countryObject);
+
+    return sortOptions([
+      defaultSelect,
+      ...uniqueCountries.map(([countryName, isoCode]) => ({
+        value: countryName,
+        label: countryName,
+        isoCode: isoCode,
+      })),
+    ]);
+  }, [airports, selectedContinent, selectedAirportName, selectedAirportCode]);
 
   const airportNameOptions = useMemo(() => {
-    const unique = Array.from(
-      new Set(airports.map((a) => a.name).filter(Boolean))
-    ).sort();
-    return [defaultSelect, ...unique.map((n) => ({ value: n, label: n }))];
-  }, [airports]);
+    let base = airports;
+    if (selectedContinent.value !== "All") {
+      base = base.filter((a) => a.continent === selectedContinent.value);
+    }
+    if (selectedCountry.value !== "All") {
+      base = base.filter((a) => a.country_name_new === selectedCountry.value);
+    }
+    if (selectedAirportCode.value !== "All") {
+      base = base.filter((a) => a.iata_code === selectedAirportCode.value);
+    }
+
+    // Get unique airports with their country codes
+    const airportObject = {};
+    base.forEach((a) => {
+      if (a.name && a.iso_country) {
+        airportObject[a.name] = a.iso_country;
+      }
+    });
+
+    const uniqueAirports = Object.entries(airportObject);
+
+    return sortOptions([
+      defaultSelect,
+      ...uniqueAirports.map(([airportName, isoCode]) => ({
+        value: airportName,
+        label: airportName,
+        isoCode: isoCode,
+      })),
+    ]);
+  }, [airports, selectedContinent, selectedCountry, selectedAirportCode]);
 
   const airportCodeOptions = useMemo(() => {
-    const unique = Array.from(
-      new Set(airports.map((a) => a.iata_code).filter(Boolean))
-    ).sort();
-    return [defaultSelect, ...unique.map((c) => ({ value: c, label: c }))];
-  }, [airports]);
+    let base = airports;
+    if (selectedContinent.value !== "All") {
+      base = base.filter((a) => a.continent === selectedContinent.value);
+    }
+    if (selectedCountry.value !== "All") {
+      base = base.filter((a) => a.country_name_new === selectedCountry.value);
+    }
+    if (selectedAirportName.value !== "All") {
+      base = base.filter((a) => a.name === selectedAirportName.value);
+    }
 
-  // Initialize map & popup
+    // Get unique airport codes with their country codes
+    const airportObject = {};
+    base.forEach((a) => {
+      if (a.iata_code && a.iso_country) {
+        airportObject[a.iata_code] = a.iso_country;
+      }
+    });
+
+    const uniqueAirports = Object.entries(airportObject);
+
+    return sortOptions([
+      defaultSelect,
+      ...uniqueAirports.map(([airportCode, isoCode]) => ({
+        value: airportCode,
+        label: airportCode,
+        isoCode: isoCode,
+      })),
+    ]);
+  }, [airports, selectedContinent, selectedCountry, selectedAirportName]);
+
+  // Keep dropdowns in sync based on selection
+  useEffect(() => {
+    if (selectedAirport) {
+      setSelectedContinent({
+        value: selectedAirport.continent,
+        label: selectedAirport.continent,
+      });
+      setSelectedCountry({
+        value: selectedAirport.country_name_new,
+        label: selectedAirport.country_name_new,
+      });
+      setSelectedAirportName({
+        value: selectedAirport.name,
+        label: selectedAirport.name,
+      });
+      setSelectedAirportCode({
+        value: selectedAirport.iata_code,
+        label: selectedAirport.iata_code,
+      });
+    }
+  }, [selectedAirport]);
+
+  // Initialize map
   useEffect(() => {
     if (!show || !mapRef.current) return;
 
@@ -143,27 +267,7 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
     };
   }, [show]);
 
-  // Update map size and markers when modal is fully shown
-  useEffect(() => {
-    if (!show || !mapInstanceRef.current || !isMapInitialized) return;
-
-    const updateMap = () => {
-      try {
-        mapInstanceRef.current.updateSize();
-        updateMarkers();
-        if (filteredAirports.length > 0) {
-          fitMarkers(filteredAirports);
-        }
-      } catch (error) {
-        console.error("Error updating map:", error);
-      }
-    };
-
-    // Delay to ensure modal animation completes
-    const timer = setTimeout(updateMap, 100);
-    return () => clearTimeout(timer);
-  }, [show, isMapInitialized, filteredAirports]);
-
+  // Update markers
   const updateMarkers = () => {
     if (!vectorLayerRef.current || !mapInstanceRef.current) return;
 
@@ -176,16 +280,18 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
           geometry: new Point(fromLonLat([a.longitude_deg, a.latitude_deg])),
         });
 
-        const isSelected = selectedAirport?.iata_code === a.iata_code;
+        const isSelected =
+          selectedAirportName.value !== "All" ||
+          selectedAirportCode.value !== "All";
 
         feature.setStyle(
           new Style({
             image: new CircleStyle({
-              radius: isSelected ? 10 : 6,
+              radius: isSelected ? 10 : 6, // larger when selected
               fill: new Fill({ color: airportTypeColor[a.type] || "blue" }),
               stroke: new Stroke({
                 color: "#fff",
-                width: isSelected ? 2 : 1,
+                width: isSelected ? 3 : 1,
               }),
             }),
           })
@@ -193,17 +299,17 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
 
         feature.setProperties({
           popupContent: `
-            <div class="${styles.popupContent}">
-              <strong>${a.name} (${a.iata_code})</strong><br/>
-              ${a.region_name}, ${a.country_name}
-              <img
-                src="https://flagsapi.com/${a.iso_country}/shiny/16.png"
-                alt="Flag of ${a.iso_country}"
-                class="${styles.flag}"
-                onerror="this.style.display='none';"
-              />
-            </div>
-          `,
+        <div class="${styles.popupContent}">
+          <strong>${a.name} (${a.iata_code})</strong><br/>
+          ${a.region_name}, ${a.country_name}
+          <img
+            src="https://flagsapi.com/${a.iso_country}/shiny/16.png"
+            alt="Flag of ${a.iso_country}"
+            class="${styles.flag}"
+            onerror="this.style.display='none';"
+          />
+        </div>
+      `,
           airportData: a,
         });
 
@@ -212,59 +318,40 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
     });
   };
 
-  // Popup + click handling
+  // Map interactions: hover popup + click selection
   useEffect(() => {
     if (!mapInstanceRef.current || !isMapInitialized) return;
 
-    const handlePointerMove = (evt) => {
-      const feature = mapInstanceRef.current.forEachFeatureAtPixel(
-        evt.pixel,
-        (f) => f
-      );
+    const map = mapInstanceRef.current;
 
-      if (feature && feature.get("popupContent") && popupRef.current) {
+    const handleMapClick = (evt) => {
+      const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+      if (feature && feature.get("airportData")) {
+        const airport = feature.get("airportData");
+        setSelectedAirport(airport);
+      }
+    };
+
+    const handlePointerMove = (evt) => {
+      if (evt.dragging) return;
+      const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
+      if (feature && feature.get("popupContent")) {
         popupRef.current.innerHTML = feature.get("popupContent");
-        popupOverlayRef.current.setPosition(evt.coordinate);
+        popupOverlayRef.current.setPosition(
+          feature.getGeometry().getCoordinates()
+        );
         popupRef.current.style.display = "block";
-      } else if (popupRef.current) {
+      } else {
         popupRef.current.style.display = "none";
       }
     };
 
-    const handleMapClick = (evt) => {
-      const feature = mapInstanceRef.current.forEachFeatureAtPixel(
-        evt.pixel,
-        (f) => f
-      );
-
-      if (feature && feature.get("airportData")) {
-        const airport = feature.get("airportData");
-        setSelectedAirport(airport);
-        setSelectedContinent({
-          value: airport.continent,
-          label: airport.continent,
-        });
-        setSelectedCountry({
-          value: airport.country_name_new,
-          label: airport.country_name_new,
-        });
-        setSelectedAirportName({ value: airport.name, label: airport.name });
-        setSelectedAirportCode({
-          value: airport.iata_code,
-          label: airport.iata_code,
-        });
-      }
-    };
-
-    const map = mapInstanceRef.current;
-    map.on("pointermove", handlePointerMove);
     map.on("click", handleMapClick);
+    map.on("pointermove", handlePointerMove);
 
     return () => {
-      if (map) {
-        map.un("pointermove", handlePointerMove);
-        map.un("click", handleMapClick);
-      }
+      map.un("click", handleMapClick);
+      map.un("pointermove", handlePointerMove);
     };
   }, [isMapInitialized, filteredAirports]);
 
@@ -275,51 +362,6 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
       fitMarkers(filteredAirports);
     }
   }, [filteredAirports, selectedAirport, isMapInitialized]);
-
-  // Clear selectedAirport if Name or Code reset to "All"
-  useEffect(() => {
-    if (
-      selectedAirport &&
-      selectedAirportName.value === "All" &&
-      selectedAirportCode.value === "All"
-    ) {
-      setSelectedAirport(null);
-    }
-  }, [selectedAirportName, selectedAirportCode, selectedAirport]);
-
-  // Auto-select airport from dropdown and zoom
-  useEffect(() => {
-    if (!isMapInitialized) return;
-
-    let airport = null;
-
-    if (selectedAirportCode.value !== "All") {
-      airport = airports.find((a) => a.iata_code === selectedAirportCode.value);
-    } else if (selectedAirportName.value !== "All") {
-      airport = airports.find((a) => a.name === selectedAirportName.value);
-    }
-
-    if (airport) {
-      setSelectedAirport(airport);
-
-      // Zoom to selected airport
-      if (
-        airport.latitude_deg &&
-        airport.longitude_deg &&
-        mapInstanceRef.current
-      ) {
-        const coords = fromLonLat([
-          airport.longitude_deg,
-          airport.latitude_deg,
-        ]);
-        mapInstanceRef.current.getView().animate({
-          center: coords,
-          zoom: 8,
-          duration: 500,
-        });
-      }
-    }
-  }, [selectedAirportName, selectedAirportCode, airports, isMapInitialized]);
 
   const fitMarkers = (airportsList) => {
     if (!airportsList.length || !mapInstanceRef.current) return;
@@ -374,6 +416,12 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
     };
   }, []);
 
+  // Apply button enable/disable logic
+  const isApplyEnabled =
+    !!selectedAirport ||
+    selectedAirportName.value !== "All" ||
+    selectedAirportCode.value !== "All";
+
   return (
     <Modal
       show={show}
@@ -401,7 +449,7 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
               <Select
                 options={continentOptions}
                 value={selectedContinent}
-                onChange={setSelectedContinent}
+                onChange={(val) => setSelectedContinent(val)}
               />
             </Col>
             <Col lg={3} md={6} xs={12} className={styles.dropdownCol}>
@@ -409,7 +457,28 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
               <Select
                 options={countryOptions}
                 value={selectedCountry}
-                onChange={setSelectedCountry}
+                onChange={(val) => setSelectedCountry(val)}
+                formatOptionLabel={(option) => (
+                  <div className={styles.countryOption}>
+                    {option.value !== "All" && option.isoCode && (
+                      <>
+                        <img
+                          src={`https://flagsapi.com/${option.isoCode}/shiny/16.png`}
+                          alt={`Flag of ${option.isoCode}`}
+                          className={styles.countryFlag}
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                            e.target.nextElementSibling.style.display = "flex";
+                          }}
+                        />
+                        <div className={styles.countryFallback}>
+                          {option.isoCode}
+                        </div>
+                      </>
+                    )}
+                    <span>{option.label}</span>
+                  </div>
+                )}
               />
             </Col>
             <Col lg={3} md={6} xs={12} className={styles.dropdownCol}>
@@ -417,7 +486,36 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
               <Select
                 options={airportNameOptions}
                 value={selectedAirportName}
-                onChange={setSelectedAirportName}
+                onChange={(val) => {
+                  setSelectedAirportName(val);
+                  if (val.value !== "All") {
+                    const airport = airports.find((a) => a.name === val.value);
+                    setSelectedAirport(airport || null);
+                  } else {
+                    setSelectedAirport(null);
+                  }
+                }}
+                formatOptionLabel={(option) => (
+                  <div className={styles.countryOption}>
+                    {option.value !== "All" && option.isoCode && (
+                      <>
+                        <img
+                          src={`https://flagsapi.com/${option.isoCode}/shiny/16.png`}
+                          alt={`Flag of ${option.isoCode}`}
+                          className={styles.countryFlag}
+                          onError={(e) => {
+                            e.target.style.display = "none";
+                            e.target.nextElementSibling.style.display = "flex";
+                          }}
+                        />
+                        <div className={styles.countryFallback}>
+                          {option.isoCode}
+                        </div>
+                      </>
+                    )}
+                    <span>{option.label}</span>
+                  </div>
+                )}
               />
             </Col>
             <Col lg={3} md={6} xs={12} className={styles.dropdownColWithButton}>
@@ -426,7 +524,39 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
                 <Select
                   options={airportCodeOptions}
                   value={selectedAirportCode}
-                  onChange={setSelectedAirportCode}
+                  onChange={(val) => {
+                    setSelectedAirportCode(val);
+                    if (val.value !== "All") {
+                      const airport = airports.find(
+                        (a) => a.iata_code === val.value
+                      );
+                      setSelectedAirport(airport || null);
+                    } else {
+                      setSelectedAirport(null);
+                    }
+                  }}
+                  formatOptionLabel={(option) => (
+                    <div className={styles.countryOption}>
+                      {option.value !== "All" && option.isoCode && (
+                        <>
+                          <img
+                            src={`https://flagsapi.com/${option.isoCode}/shiny/16.png`}
+                            alt={`Flag of ${option.isoCode}`}
+                            className={styles.countryFlag}
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              e.target.nextElementSibling.style.display =
+                                "flex";
+                            }}
+                          />
+                          <div className={styles.countryFallback}>
+                            {option.isoCode}
+                          </div>
+                        </>
+                      )}
+                      <span>{option.label}</span>
+                    </div>
+                  )}
                 />
               </div>
               <Button
@@ -473,7 +603,7 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
       <Modal.Footer className={styles.modalFooter}>
         <Button
           className={styles.applyButton}
-          disabled={!selectedAirport}
+          disabled={!isApplyEnabled}
           onClick={() => {
             onApplyFilters?.({ airport: selectedAirport });
             onHide();
@@ -486,4 +616,4 @@ const FilterModal = ({ show, onHide, airports = [], onApplyFilters }) => {
   );
 };
 
-export default FilterModal;
+export default FilterModal2;

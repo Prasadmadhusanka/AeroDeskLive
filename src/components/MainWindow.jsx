@@ -8,7 +8,7 @@ import { FiFilter, FiRefreshCw } from "react-icons/fi";
 import { MdFlightTakeoff, MdFlightLand } from "react-icons/md";
 import GridLoader from "react-spinners/GridLoader";
 import { Container, Row, Col } from "react-bootstrap";
-import FilterModal from "./FilterModal2";
+import FilterModal from "./FilterModal";
 import AirportModal from "./AirportModal";
 import { getDeviceLocation } from "../utils/currentLocation";
 import { fetchNearestAirport } from "../utils/nearestAirport";
