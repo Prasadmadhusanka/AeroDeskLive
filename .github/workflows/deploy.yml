@@ -8,9 +8,10 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+      CI: false
     permissions:
       contents: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,10 +22,13 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build project
         run: npm run build
+
+      - name: List build output
+        run: ls -R dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
