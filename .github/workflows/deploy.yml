@@ -8,28 +8,38 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    env:
-      CI: false
     permissions:
       contents: write
+    env:
+      CI: false
+      # Inject API keys from GitHub Secrets
+      VITE_AVIATION_EDGE_API_KEY: ${{ secrets.VITE_AVIATION_EDGE_API_KEY }}
+      VITE_OPENWEATHER_API_KEY: ${{ secrets.VITE_OPENWEATHER_API_KEY }}
+
     steps:
+      # 1️⃣ Checkout repo
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # 4️⃣ Build project
       - name: Build project
         run: npm run build
 
+      # 5️⃣ Debug - list dist contents (optional)
       - name: List build output
         run: ls -R dist
 
+      # 6️⃣ Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
