@@ -7,7 +7,7 @@ import { calculateAirTime } from "./calculateAirTime.js";
  *
  * @async
  * @function fetchAirportArrivals
- * @param {string} iataCode - IATA code of the airport (e.g., 'JFK')
+ * @param {string} iataCode - IATA code of the airport
  * @returns {Promise<Object[]>} - Promise resolving to array of arrival flight objects
  */
 export async function fetchAirportArrivals(iataCode) {
